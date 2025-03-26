@@ -1,0 +1,65 @@
+extends ../layouts/default
+block content
+    .container-fluid
+        .row
+            .col-md-12
+                h1.text-center.mt-4 Dashboard Quản Lý Học Tiếng Anh
+        
+        .row.mt-4
+            .col-md-4
+                .card.text-white.bg-primary.mb-3
+                    .card-header Tổng Số Bài Test
+                    .card-body
+                        h5.card-title 150
+                        p.card-text Tổng số bài kiểm tra đã được tạo.
+            .col-md-4
+                .card.text-white.bg-success.mb-3
+                    .card-header Tổng Số Học Viên
+                    .card-body
+                        h5.card-title 1200
+                        p.card-text Số lượng học viên đang học.
+            .col-md-4
+                .card.text-white.bg-warning.mb-3
+                    .card-header Tổng Số Giáo Viên
+                    .card-body
+                        h5.card-title 35
+                        p.card-text Số lượng giáo viên tham gia giảng dạy.
+
+        .row.mt-4
+            .col-md-12
+                .card
+                    .card-header Bài Test Mới Nhất
+                    .card-body
+                        table.table.table-striped
+                            thead
+                                tr
+                                    th #
+                                    th Tên Bài Test
+                                    th Loại
+                                    th Ngày Tạo
+                                    th Hành Động
+                            tbody
+                                tr
+                                    td 1
+                                    td Test Listening Cơ Bản
+                                    td Listening
+                                    td 2024-03-25
+                                    td
+                                        a.btn.btn-info.btn-sm(href='#') Xem
+                                        a.btn.btn-danger.btn-sm(href='#') Xóa
+                                tr
+                                    td 2
+                                    td Reading Level 2
+                                    td Reading
+                                    td 2024-03-20
+                                    td
+                                        a.btn.btn-info.btn-sm(href='#') Xem
+                                        a.btn.btn-danger.btn-sm(href='#') Xóa
+                                tr
+                                    td 3
+                                    td Writing Advanced
+                                    td Writing
+                                    td 2024-03-18
+                                    td
+                                        a.btn.btn-info.btn-sm(href='#') Xem
+                                        a.btn.btn-danger.btn-sm(href='#') Xóa
