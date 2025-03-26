@@ -1,20 +1,23 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const database = require('./config/database');
+
+database.connectDB();
+
 const app = express();
 const port = 10000;
 
-
 const routerClient  = require('./routes/client/index.route');
-app.set('view engine', './views');
-
-
+const routerAdmin = require('./routes/admin/index.route');
+routerClient(app); 
+routerAdmin(app);
 app.set('view engine', 'pug');
+app.set('views', './views');
 app.use(express.static('public'));
 
-routerClient(app);
+// app.use('/client', routerClient);
+// app.use('/admin', routerAdmin);
 
-
-
-
-app.listen(port,(req,res)=>{
-    console.log('Server đã kết nối đến cổng:',port, 'thành công');
+app.listen(port, () => {
+    console.log('Server đã kết nối đến cổng:', port, 'thành công');
 });
