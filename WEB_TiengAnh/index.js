@@ -7,6 +7,10 @@ database.connectDB();
 const app = express();
 const port = 10000;
 
+
+app.use(express.json());
+
+const questionRoutes = require('./routes/admin/CRUD_readingTOEIC.route.js');
 const routerClient  = require('./routes/client/index.route');
 const routerAdmin = require('./routes/admin/index.route');
 routerClient(app); 
@@ -14,7 +18,7 @@ routerAdmin(app);
 app.set('view engine', 'pug');
 app.set('views', './views');
 app.use(express.static('public'));
-
+app.use('/admin/questions', questionRoutes);
 // app.use('/client', routerClient);
 // app.use('/admin', routerAdmin);
 
