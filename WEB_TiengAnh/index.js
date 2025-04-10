@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const database = require('./config/database');
 
+
 database.connectDB();
 
 const app = express();
