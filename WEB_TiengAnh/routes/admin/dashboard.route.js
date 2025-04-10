@@ -4,4 +4,6 @@ const questionController = require("../../controllers/admin/CRUD_readingTOEIC.co
 
 router.get("/dashboard", questionController.getDashboard);
 
+router.get("/dashboard_TOEIC", questionController.getDashboard_TOEIC);
+
 module.exports = router;

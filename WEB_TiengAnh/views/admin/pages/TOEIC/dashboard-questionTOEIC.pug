@@ -1,0 +1,25 @@
+extends ../../layouts/default
+block content
+  h1 Danh sách câu hỏi TOEIC Reading
+  a(href="/admin/questions/create") Thêm câu hỏi mới
+  table#toeic-questions
+    thead
+      tr
+        th STT
+        th Mã câu hỏi (MaCC)
+        th Câu hỏi
+        th Part
+        th Đáp án
+        th Hành động
+    tbody
+      each q, index in questions
+        tr
+          td= index + 1
+          td= q.MaCC
+          td= q.question
+          td= q.part
+          td= q.correctAnswer
+          td
+            a(href=`/admin/questions/edit/${q._id}`) Sửa
+            |  
+            a(href=`/admin/questions/delete/${q._id}`, onclick="return confirm('Bạn chắc chắn muốn xóa?')") Xóa

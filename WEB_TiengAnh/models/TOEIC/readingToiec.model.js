@@ -13,6 +13,10 @@ const readingToiecSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  questionN: {
+    type: Number,
+    required: true,
+  },
   question: {
     type: String,
     required: true,
