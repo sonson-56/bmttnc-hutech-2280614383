@@ -25,6 +25,25 @@ router.get("/questions/edit/:id", questionController.showEditForm);
 router.post("/questions/update/:id", upload.single("image"), questionController.updateQuestion);
 
 
+// Lọc câu hỏi theo Part (5/6/7)
+router.get("/questions/by-part/:part", questionController.getQuestionsByPart);
+
+// Lọc câu hỏi theo độ khó (Dễ/Trung bình/Kho)
+router.get("/questions/generate-random", questionController.generateRandomExam);
+
+// Lọc đề thi
+router.get("/exams/", questionController.getAllExams);
+
+
+// Tạo đề thi
+router.get("/exams/create", questionController.showCreateFormExam);
+
+
+
+// Chi tiết đề thi
+router.get("/exams/:id", questionController.getExamDetail);
+
+
 
 // Hiển thị form tìm kiếm
 router.get("/questions/search", questionController.showSearchForm);
@@ -35,4 +54,7 @@ router.get("/questions/search-results", questionController.searchQuestions);
 // Xóa câu hỏi
 router.get("/questions/delete/:id", questionController.deleteQuestion);
 
+
+// Xóa đề thi
+router.delete("/exams/:id", questionController.deleteExam);
 module.exports = router;

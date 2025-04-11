@@ -35,7 +35,12 @@ const readingToiecSchema = new mongoose.Schema({
   },
   Img: {
     type: String, // Đường dẫn tới ảnh (upload)
-  }
+  },
+  difficulty: {
+    type: Number,
+    enum: [0, 1, 2], // 0: Dễ, 1: Trung bình, 2: Khó
+    default: 0
+}
 }, { timestamps: true });
 
 module.exports = mongoose.model("Question", readingToiecSchema,"Reading_TOEIC");

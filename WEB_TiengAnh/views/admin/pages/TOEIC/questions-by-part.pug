@@ -1,0 +1,31 @@
+extends ../../layouts/default
+block content
+  h1 Danh sách câu hỏi TOEIC #{partNames[currentPart]}
+
+  //- Menu chọn Part
+  .part-filter.mb-3
+    each val, key in partNames
+      a.btn.btn-outline-primary.mr-2(
+        href=`/admin/questions/by-part/${key}`, 
+        class=currentPart == key ? "active" : ""
+      ) #{val}
+
+  //- Bảng câu hỏi
+  table#questionsTable.table.table-striped.table-bordered
+    thead
+      tr
+        th STT
+        th Mã (MaCC)
+        th Câu hỏi
+        th Đáp án
+        th Hành động
+    tbody
+      each q, index in questions
+        tr
+          td= index + 1
+          td= q.MaCC
+          td= q.question
+          td= q.correctAnswer
+          td
+            a.btn.btn-sm.btn-warning.mr-1(href=`/admin/questions/edit/${q._id}`) Sửa
+            a.btn.btn-sm.btn-danger(href=`/admin/questions/delete/${q._id}`, onclick="return confirm('Xóa?')") Xóa
