@@ -12,23 +12,13 @@ const examSchema = new mongoose.Schema({
     }],
     parts: [{
         type: Number,
-        enum: [5, 6, 7],
-        required: true
+        enum: [5, 6, 7]
     }],
     difficulty: {
         type: Number,
-        enum: [0, 1, 2], // 0: Easy, 1: Medium, 2: Hard
-        required: true
+        enum: [0, 1, 2] // 0: Easy, 1: Medium, 2: Hard
     },
-    questionCount: {
-        type: Number,
-        required: true
-    },
-    status: {
-        type: Number,
-        enum: [0, 1, 2], // 0: Draft, 1: Published, 2: Archived
-        default: 0
-    },
+    questionCount: Number,
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
