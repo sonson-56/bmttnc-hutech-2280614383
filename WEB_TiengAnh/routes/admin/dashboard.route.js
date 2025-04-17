@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const questionController = require("../../controllers/admin/CRUD_readingTOEIC.controller"); // Đảm bảo đường dẫn đúng!
+const dashboardController = require("../../controllers/admin/dashboard.controller");
 
-router.get("/dashboard", questionController.getDashboard);
-
-router.get("/dashboard_TOEIC", questionController.getDashboard_TOEIC);
+// Khớp chính xác với các route đã khai báo trong index.js
+router.get("/dashboard", dashboardController.index); // GET /admin/dashboard
+router.get("/dashboard_TOEIC", dashboardController.getDashboard_TOEIC); // GET /admin/dashboard_TOEIC
+router.get("/redirect/:examType", dashboardController.redirectExamType); // GET /admin/redirect/:examType
 
 module.exports = router;

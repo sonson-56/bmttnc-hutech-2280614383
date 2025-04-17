@@ -1,5 +1,5 @@
-const Question = require("../../models/readingToiec.model");
-const IELTSQuestion = require("../../models/ielts.model"); // Đảm bảo bạn đã có model này
+const Question = require("../../models/TOEIC/readingToiec.model"); // Đảm bảo bạn đã có model này
+const IELTSQuestion = require("../../models/IELTS/readingIELTS.model"); // Đảm bảo bạn đã có model này
 
 // Hiển thị trang dashboard chính với lựa chọn loại đề
 module.exports.index = async (req, res) => {
@@ -46,4 +46,15 @@ module.exports.showQuestions = async (req, res) => {
         console.error(error);
         res.status(500).render("error");
     }
+};
+module.exports.getDashboard_TOEIC = (req, res) => {
+    res.render("admin/pages/TOEIC/dashboard_TOEIC", {
+        title: "Dashboard TOEIC",
+        user: req.user,
+    });
+};
+
+module.exports.redirectExamType = (req, res) => {
+    const { examType } = req.params;
+    res.send(`Redirect to ${examType}`);
 };

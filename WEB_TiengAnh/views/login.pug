@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    title Đăng nhập
+  body
+    h1 Đăng nhập
+    
+    //- Hiển thị lỗi nếu có
+    if error
+      p.error-message= error
+
+    form(action="/auth/login", method="POST")
+      label(for="email") Email:
+      input(type="email", name="email", required)
+      
+      label(for="password") Mật khẩu:
+      input(type="password", name="password", required)
+      
+      button(type="submit") Đăng nhập
+    
+    p Chưa có tài khoản? 
+      a(href="/auth/register") Đăng ký ngay
