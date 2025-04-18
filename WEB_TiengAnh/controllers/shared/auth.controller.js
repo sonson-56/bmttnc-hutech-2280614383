@@ -1,7 +1,9 @@
 const User = require('../../models/shared/user.model');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/config');
-
+const { googleCloud } = require('../../config/config');
+const SpeechToText = require('../../models/TOEIC/speechToText.model');
+const { SpeechClient } = require('@google-cloud/speech').v1;
 // Render trang đăng ký (GET)
 exports.showRegister = (req, res) => {
   res.render('client/pages/register'); // Render file signup.pug
@@ -69,4 +71,65 @@ exports.logout = (req, res) => {
 }
 exports.showLogout = (req, res) => {
   res.render('client/pages/login'); // Render file login.pug
+};
+exports.convertSpeechToText = async (req, res, next) => {
+  try {
+      // Khởi tạo client Google Speech-to-Text
+      const client = new SpeechClient({
+          key: googleCloud.speechToText.apiKey
+      });
+
+      // Xử lý file audio từ request (giả sử sử dụng upload.middleware)
+      const audioFile = req.file;
+      if (!audioFile) {
+          return res.status(400).json({ error: 'No audio file provided' });
+      }
+
+      // Cấu hình request
+      const audio = {
+          content: audioFile.buffer.toString('base64'),
+      };
+      const config = {
+          encoding: 'LINEAR16',
+          sampleRateHertz: 16000,
+          languageCode: googleCloud.speechToText.languageCode,
+      };
+      const request = {
+          audio: audio,
+          config: config,
+      };
+
+      // Gọi API Google Speech-to-Text
+      const [response] = await client.recognize(request);
+      const transcription = response.results
+          .map(result => result.alternatives[0].transcript)
+          .join('\n');
+
+      // Lưu kết quả vào database
+      const newConversion = new SpeechToText({
+          userId: req.user.id,
+          originalAudio: audioFile.path,
+          convertedText: transcription,
+          language: googleCloud.speechToText.languageCode
+      });
+      await newConversion.save();
+
+      res.json({
+          success: true,
+          text: transcription,
+          conversionId: newConversion._id
+      });
+  } catch (error) {
+      next(error);
+  }
+};
+
+exports.getConversionHistory = async (req, res, next) => {
+  try {
+      const conversions = await SpeechToText.find({ userId: req.user.id })
+          .sort({ createdAt: -1 });
+      res.json({ success: true, data: conversions });
+  } catch (error) {
+      next(error);
+  }
 };

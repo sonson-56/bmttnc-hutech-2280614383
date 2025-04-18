@@ -1,0 +1,88 @@
+extends ../layouts/main
+
+block content
+    .container
+        h1 Speech to Text Conversion
+        .row
+            .col-md-6
+                .card
+                    .card-header
+                        h5 Convert Audio to Text
+                    .card-body
+                        form#speechForm(enctype="multipart/form-data")
+                            .form-group
+                                label(for="audioFile") Select Audio File
+                                input#audioFile.form-control-file(type="file", name="audio", accept="audio/*")
+                            button.btn.btn-primary(type="submit") Convert
+            .col-md-6
+                .card
+                    .card-header
+                        h5 Result
+                    .card-body
+                        textarea#resultText.form-control(rows="10", readonly)
+        .row.mt-4
+            .col-12
+                .card
+                    .card-header
+                        h5 Conversion History
+                    .card-body
+                        table.table
+                            thead
+                                tr
+                                    th Date
+                                    th Original Audio
+                                    th Converted Text
+                            tbody#historyTable
+
+block scripts
+    script.
+        $(document).ready(function() {
+            // Xử lý form submit
+            $('#speechForm').on('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData();
+                formData.append('audio', $('#audioFile')[0].files[0]);
+
+                $.ajax({
+                    url: '/api/speech-to-text',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+                    success: function(response) {
+                        $('#resultText').val(response.text);
+                        loadHistory();
+                    },
+                    error: function(error) {
+                        console.error(error);
+                        alert('Error during conversion');
+                    }
+                });
+            });
+
+            // Tải lịch sử
+            function loadHistory() {
+                $.ajax({
+                    url: '/api/speech-to-text/history',
+                    type: 'GET',
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+                    success: function(response) {
+                        const tableBody = $('#historyTable');
+                        tableBody.empty();
+                        response.data.forEach(item => {
+                            tableBody.append(`
+                                <tr>
+                                    <td>${new Date(item.createdAt).toLocaleString()}</td>
+                                    <td><a href="${item.originalAudio}" target="_blank">Audio</a></td>
+                                    <td>${item.convertedText.substring(0, 50)}...</td>
+                                </tr>
+                            `);
+                        });
+                    }
+                });
+            }
+
+            // Tải lịch sử khi trang load
+            loadHistory();
+        });

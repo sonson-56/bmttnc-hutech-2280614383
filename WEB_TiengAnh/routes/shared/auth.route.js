@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../../controllers/shared/auth.controller');
 const { verifyToken, isAdmin, noCache } = require('../../middlewares/auth.middleware');
+const uploadMiddleware = require('../../middlewares/upload.middleware');
 
 
 // Đăng ký
@@ -38,4 +39,18 @@ router.get('/dashboard', verifyToken, (req, res) => {
     res.render('admin/pages/dashboard', { user: req.user });
   });
   
+// Thêm route mới cho chức năng speech-to-text
+router.post(
+  '/speech-to-text',
+  uploadMiddleware.single('audio'), // Sử dụng middleware upload có sẵn
+  authMiddleware, // Sử dụng middleware auth có sẵn
+  authController.convertSpeechToText
+);
+
+router.get(
+  '/speech-to-text/history',
+  authMiddleware,
+  authController.getConversionHistory
+);
+
 module.exports = router;
